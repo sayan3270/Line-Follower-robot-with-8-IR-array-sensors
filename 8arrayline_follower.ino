@@ -6,7 +6,7 @@ int s5;
 int s6;
 int s7;
 int s8;
-
+//led pin - 13
 const int ENA = 3;
 const int IN1=2;
 const int IN2=4;
@@ -29,10 +29,11 @@ void setup()
   pinMode(IN2,OUTPUT);
   pinMode(IN3,OUTPUT);
   pinMode(IN4,OUTPUT);
+  pinMode(13,OUTPUT); //led blink condition on checkpoint
   Serial.begin(9600);
 
   //forward();
-  delay(2000);
+  //delay(2000);
 }
 
 void loop() 
@@ -71,9 +72,13 @@ void loop()
   //white=0
   //forward
   if(
-  ((s1==0)&&(s2==0)&&(s3==0)&&(s4==1)&&(s5==1)&&(s6==0)&&(s7==0)&&(s8==0))||
-  ((s1==0)&&(s2==0)&&(s3==1)&&(s4==1)&&(s5==1)&&(s6==1)&&(s7==0)&&(s8==0))||
-  ((s1==0)&&(s2==1)&&(s3==1)&&(s4==1)&&(s5==1)&&(s6==1)&&(s7==1)&&(s8==0)) 
+  ((s1==1)&&(s2==1)&&(s3==1)&&(s4==0)&&(s5==1)&&(s6==1)&&(s7==1)&&(s8==1))||
+  ((s1==1)&&(s2==1)&&(s3==1)&&(s4==1)&&(s5==0)&&(s6==1)&&(s7==1)&&(s8==1))||
+  ((s1==1)&&(s2==1)&&(s3==0)&&(s4==1)&&(s5==1)&&(s6==1)&&(s7==1)&&(s8==1))||
+  ((s1==1)&&(s2==1)&&(s3==1)&&(s4==1)&&(s5==1)&&(s6==0)&&(s7==1)&&(s8==1))||
+  ((s1==1)&&(s2==1)&&(s3==1)&&(s4==0)&&(s5==0)&&(s6==1)&&(s7==1)&&(s8==1))||
+  ((s1==1)&&(s2==1)&&(s3==0)&&(s4==0)&&(s5==0)&&(s6==0)&&(s7==1)&&(s8==1))||
+((s1==1)&&(s2==0)&&(s3==0)&&(s4==0)&&(s5==0)&&(s6==0)&&(s7==0   )&&(s8==1)) 
   )
   {
     forward();
@@ -88,6 +93,7 @@ void loop()
   ((s1==0)&&(s2==0)&&(s3==0)&&(s4==0)&&(s5==0)&&(s6==0)&&(s7==1)&&(s8==1))||
   ((s1==0)&&(s2==0)&&(s3==0)&&(s4==0)&&(s5==0)&&(s6==0)&&(s7==0)&&(s8==1))||
   ((s1==0)&&(s2==0)&&(s3==0)&&(s4==0)&&(s5==0)&&(s6==1)&&(s7==1)&&(s8==0))||
+  ((s1==0)&&(s2==0)&&(s3==0)&&(s4==0)&&(s5==1)&&(s6==1)&&(s7==1)&&(s8==0))||
   ((s1==0)&&(s2==0)&&(s3==0)&&(s4==0)&&(s5==1)&&(s6==1)&&(s7==0)&&(s8==0))||
   ((s1==0)&&(s2==0)&&(s3==0)&&(s4==0)&&(s5==1)&&(s6==1)&&(s7==1)&&(s8==0))||
   ((s1==0)&&(s2==0)&&(s3==0)&&(s4==1)&&(s5==1)&&(s6==1)&&(s7==0)&&(s8==0))||
@@ -106,6 +112,7 @@ void loop()
   ((s1==1)&&(s2==1)&&(s3==0)&&(s4==0)&&(s5==0)&&(s6==0)&&(s7==0)&&(s8==0))||
   ((s1==1)&&(s2==0)&&(s3==0)&&(s4==0)&&(s5==0)&&(s6==0)&&(s7==0)&&(s8==0))||
   ((s1==0)&&(s2==1)&&(s3==1)&&(s4==0)&&(s5==0)&&(s6==0)&&(s7==0)&&(s8==0))||
+  ((s1==0)&&(s2==1)&&(s3==1)&&(s4==1)&&(s5==0)&&(s6==0)&&(s7==0)&&(s8==0))||
   ((s1==0)&&(s2==0)&&(s3==1)&&(s4==1)&&(s5==0)&&(s6==0)&&(s7==0)&&(s8==0))||
   ((s1==0)&&(s2==1)&&(s3==1)&&(s4==1)&&(s5==0)&&(s6==0)&&(s7==0)&&(s8==0))||
   ((s1==0)&&(s2==0)&&(s3==1)&&(s4==1)&&(s5==1)&&(s6==0)&&(s7==0)&&(s8==0))||
@@ -116,43 +123,57 @@ void loop()
     left();
   }
   else motor_stop();
+    if(
+  ((s1==1)&&(s2==1)&&(s3==0)&&(s4==0)&&(s5==0)&&(s6==0)&&(s7==1)&&(s8==1))||
+  ((s1==1)&&(s2==0)&&(s3==0)&&(s4==0)&&(s5==0)&&(s6==0)&&(s7==0)&&(s8==1)) 
+  )
+  {
+   digitalWrite(13,HIGH);
+  delayMicroseconds(50);
+  digitalWrite(13,LOW);
+  }
 }
+
+
+  
 void forward()
 {
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
-  analogWrite(ENA, 80);
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+  analogWrite(ENA, 100);
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
-  analogWrite(ENB, 80);
+  analogWrite(ENB, 100);
 }
 
 void right()
+{
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+  analogWrite(ENA, 100);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENB, 0);
+}
+
+void left()
 {
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, LOW);
   analogWrite(ENA, 0);
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
-  analogWrite(ENB, 60);
-}
-
-void left()
-{
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
-  analogWrite(ENA, 60);
-  digitalWrite(IN3, LOW);
-  digitalWrite(IN4, LOW);
-  analogWrite(ENB, 0);
+  analogWrite(ENB, 100);
 }
 
 void motor_stop()
 {
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, LOW);
-  analogWrite(ENA, 0);
+  analogWrite(ENA, 100);
   digitalWrite(IN3, LOW);
   digitalWrite(IN4, LOW);
-  analogWrite(ENB, 0);
+  digitalWrite(13,HIGH);
+  delayMicroseconds(50);
+  digitalWrite(13,LOW);
 }
